@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MusicApp</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+  </head>
+
+  <body>
+    <h1><font size="10" color="green"><i>Music App</i></font></h1>
+    <% if current_user %>
+      <!-- <%= button_to "Sign out", session_url, method: 'delete'%> -->
+      <form action="<%= session_url %>" method="post">
+        <input type="hidden" name="_method" value="delete"/>
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>"/>
+        <input type="submit" value="Sign out"/>
+      </form>
+    <% else %>
+      <% unless controller_name == "sessions" %>
+        <!-- <%= link_to "Sign in", new_session_url%> -->
+        <a href="<%= new_session_url %>">Sign in</a>
+      <% end %>
+      <% unless controller_name == "users" %>
+        <!-- <%= link_to "Sign up", new_user_url%> -->
+        <a href="<%= new_user_url %>">Sign up</a>
+      <% end %>
+    <% end %>
+    <%= yield %>
+    <% if flash[:errors] %>
+      <%= flash[:errors].join(", ") %>
+    <% end %>
+  </body>
+</html>
